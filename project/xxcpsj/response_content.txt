@@ -1,0 +1,47 @@
+以下是一个简单的Python示例代码，用于调用阿里云大模型：
+
+```python
+import requests
+
+# 你的Access Key
+access_key = 'your_access_key'
+# 你的Access Secret
+access_secret = 'your_access_secret'
+# 你的API域名
+api_domain = 'https://nlp.api.alicloud.com'
+
+def call_nlp_service(api, data):
+    method = "POST"
+    url = api_domain + api
+    headers = {
+        "Content-Type": "application/json",
+        "X-SDK-Language": "Python",
+        "X-SDK-Version": "3.0.0"
+    }
+    
+    # 使用Access Key签名请求
+    auth = {
+        "method": "BASIC",
+        "appkey": access_key,
+        "signMethod": "HMAC-SHA1",
+        "securityToken": "",
+        "signString": method + "\n" + url + "\n" + "".join([str(k) + ":" + str(v) for k, v in sorted(headers.items())]) + "\n",
+        "timestamp": "",
+        "version": ""
+    }
+
+    response = requests.request(
+        method=method,
+        url=url,
+        headers=headers,
+        json=data,
+        auth=auth
+    )
+    return response.json()
+
+data = {"text": "你好，我想问一下天气怎么样？"}
+response = call_nlp_service("/v1/nlu/qa", data)
+print(response)
+```
+
+注意：这只是一个基本示例，实际使用时需要替换`your_access_key`和`your_access_secret`为你的实际凭证，并根据你要使用的具体大模型API调整请求参数。

@@ -1,0 +1,23 @@
+{
+  "choices": [
+    {
+      "message": {
+        "role": "assistant",
+        "content": "以下是一个简单的Python示例代码，用于调用阿里云大模型：\n\n```python\nimport requests\n\n# 你的Access Key\naccess_key = 'your_access_key'\n# 你的Access Secret\naccess_secret = 'your_access_secret'\n# 你的API域名\napi_domain = 'https://nlp.api.alicloud.com'\n\ndef call_nlp_service(api, data):\n    method = \"POST\"\n    url = api_domain + api\n    headers = {\n        \"Content-Type\": \"application/json\",\n        \"X-SDK-Language\": \"Python\",\n        \"X-SDK-Version\": \"3.0.0\"\n    }\n    \n    # 使用Access Key签名请求\n    auth = {\n        \"method\": \"BASIC\",\n        \"appkey\": access_key,\n        \"signMethod\": \"HMAC-SHA1\",\n        \"securityToken\": \"\",\n        \"signString\": method + \"\\n\" + url + \"\\n\" + \"\".join([str(k) + \":\" + str(v) for k, v in sorted(headers.items())]) + \"\\n\",\n        \"timestamp\": \"\",\n        \"version\": \"\"\n    }\n\n    response = requests.request(\n        method=method,\n        url=url,\n        headers=headers,\n        json=data,\n        auth=auth\n    )\n    return response.json()\n\ndata = {\"text\": \"你好，我想问一下天气怎么样？\"}\nresponse = call_nlp_service(\"/v1/nlu/qa\", data)\nprint(response)\n```\n\n注意：这只是一个基本示例，实际使用时需要替换`your_access_key`和`your_access_secret`为你的实际凭证，并根据你要使用的具体大模型API调整请求参数。"
+      },
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null
+    }
+  ],
+  "object": "chat.completion",
+  "usage": {
+    "prompt_tokens": 78,
+    "completion_tokens": 345,
+    "total_tokens": 423
+  },
+  "created": 1741762791,
+  "system_fingerprint": null,
+  "model": "qwen1.5-32b-chat",
+  "id": "chatcmpl-b43c1323-fc09-9c93-8069-886edf8db353"
+}
